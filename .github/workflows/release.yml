@@ -1,3 +1,5 @@
+# Creating a release as a draft first will not fire this event:
+# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
 on:
   release:
     types: [created]
