@@ -1,8 +1,10 @@
-# `echotraffic`: echo your network traffic for FOSSA CLI
+# `echotraffic`
 
 This small program allows users to view traffic sent by `fossa-cli` to the FOSSA service.
 
 # 30 second setup
+
+For more advanced usage, run with the `-h` flag to see help output.
 
 ## From source
 
@@ -10,8 +12,6 @@ This small program allows users to view traffic sent by `fossa-cli` to the FOSSA
 1. Run `go run main.go`.
 2. Run `fossa analyze -e 'http://localhost:3000'` in a different terminal.
 3. Observe `fossa-cli` traffic written to the terminal.
-
-Run `go run main.go -h` for more usage information.
 
 ## From prebuilt binary
 
