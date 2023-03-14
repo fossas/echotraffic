@@ -1,0 +1,15 @@
+name: FOSSA
+on: push
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: curl https://raw.githubusercontent.com/fossas/fossa-cli/master/install-latest.sh | bash
+      - run: fossa analyze
+        env:
+          FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
+      - run: fossa test
+        env:
+          FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
