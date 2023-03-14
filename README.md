@@ -1,8 +1,10 @@
-### `echotraffic`: echo your network traffic for FOSSA CLI
+# `echotraffic`: echo your network traffic for FOSSA CLI
 
 This small program allows users to view traffic sent by `fossa-cli` to the FOSSA service.
 
-### 30 second setup
+# 30 second setup
+
+## From source
 
 0. Install Go: https://go.dev/doc/install
 1. Run `go run main.go`.
@@ -11,11 +13,12 @@ This small program allows users to view traffic sent by `fossa-cli` to the FOSSA
 
 Run `go run main.go -h` for more usage information.
 
-### Building
+## From prebuilt binary
 
-If desired, you can build and distribute this with `go build`.
+Go to [the latest release](https://github.com/fossas/echotraffic/releases/latest)
+and download the appropriate binary for your local system.
 
-### How to read output
+# How to read output
 
 Each discrete API call is denoted by the line `🚀 Forward '{path}' to '{destination}'`:
 ```
