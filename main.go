@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"unicode/utf8"
 )
 
 var proxyTarget string
@@ -67,10 +68,34 @@ func main() {
 		// Replace the body in the request with a new reader that just reads from the body
 		// that was previously buffered at the start of this function, and perform the reverse proxy.
 		r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
-		proxy.ServeHTTP(w, r)
+
+		rr := responseRecorder{w}
+		proxy.ServeHTTP(rr, r)
 	})
 
 	http.ListenAndServe(listen, nil)
+}
+
+type responseRecorder struct {
+	w http.ResponseWriter
+}
+
+func (rr responseRecorder) Header() http.Header {
+	return rr.w.Header()
+}
+
+func (rr responseRecorder) Write(content []byte) (int, error) {
+	if !utf8.Valid(content) {
+		log.Printf("<binary content>\n")
+	} else {
+		log.Printf("%s\n", content)
+	}
+	return rr.w.Write(content)
+}
+
+func (rr responseRecorder) WriteHeader(status int) {
+	log.Printf("✨ Response:\n%v\n", status)
+	rr.w.WriteHeader(status)
 }
 
 func bailf(msg string, err error) {
