@@ -19,12 +19,14 @@ import (
 
 var proxyTarget string
 var listen string
+var printResponse bool
 
 func main() {
 	log.SetFlags(0)
 
 	flag.StringVar(&proxyTarget, "proxy", "https://app.fossa.com", "The host to which all requests should be proxied.")
 	flag.StringVar(&listen, "listen", ":3000", "The local address on which to listen.")
+	flag.BoolVar(&printResponse, "response", false, "Prints the response from the remote endpoint if enabled and if the response is text.")
 	flag.Parse()
 
 	proxyUrl, err := url.Parse(proxyTarget)
@@ -69,8 +71,12 @@ func main() {
 		// that was previously buffered at the start of this function, and perform the reverse proxy.
 		r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 
-		rr := responseRecorder{w}
-		proxy.ServeHTTP(rr, r)
+		if printResponse {
+			rr := responseRecorder{w}
+			proxy.ServeHTTP(rr, r)
+		} else {
+			proxy.ServeHTTP(w, r)
+		}
 	})
 
 	http.ListenAndServe(listen, nil)
